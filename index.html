@@ -14,7 +14,7 @@
     .wner{
       color: teal;
       text-align: center;
-      font-size: 20pt;
+      font-size: 25pt;
     }
     .again-center{
         display: flex;
@@ -30,38 +30,41 @@
     <v-app>
       <v-main>
         <v-container>
+      
         <div class="txt">
           <v-form class="px-3">
-            <input type="number" v-model="goal" style="text-align: center;"></v-text-field>
-            <v-btn flat class="success mx-0 mt-3" @click="submit">Enter</v-btn>
-            <v-btn flat color="error mx-0 mt-3" @click="newGame">New game</v-btn>
+            <input type="number" v-model="goal" style="text-align: center; width: 4cm;"></v-text-field>
+            <v-btn flat color="success mx-0 mt-3" @click="submit">ตกลง</v-btn>
+            <v-btn flat color="error mx-0 mt-3" @click="newGame">
+              <v-icon left> mdi-reload</v-icon>เริ่มใหม่</v-btn>
           </v-form><br>
         <label>จำนวนเงินเป้าหมาย {{goal}} </label> <br>
         <label>จำนวนเงินในกล่อง  {{currentmoney}}</label> <br>          
         <label>จำนวนเงินที่ AI เติม  {{aimoney}}</label> <br>
         </div> <br>
 
-      <div v-if="goal==currentmoney" class="wner">
-        เกมจบ ผู้ชนะคือ {{ (!player)? "มนุษย์" : "AI" }}
-      </div><br>
+        <div v-if="goal==currentmoney" class="wner">
+          <b>เกมจบแล้ว!</b>
+          <label>ผู้ชนะ คือ {{ (!player)? "Human" : "AI" }}</label>
+        </div> <br>
 
      <div v-if="player" style="text-align: center;">
 
-        <v-btn icon width="auto" height="auto"  @click="addMoney(1)" :disabled="currentmoney+1>goal">
-          <v-avatar size="100"><v-img src="img/one.png" style="width: 3cm;"></v-img></v-avatar>
+        <v-btn icon width="auto" height="auto" @click="addMoney(1)" :disabled="currentmoney+1>goal" >
+          <v-avatar size="100"><v-img src="img/one.png" style="width: 3cm;" ></v-img></v-avatar>
         </v-btn>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <v-btn icon width="auto" height="auto"  @click="addMoney(2)" :disabled="currentmoney+2>goal">
+        <v-btn icon width="auto" height="auto" @click="addMoney(2)" :disabled="currentmoney+2>goal">
           <v-avatar size="100"><v-img src="img/two.png" style="width: 3cm;"></v-img></v-avatar>
         </v-btn>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <v-btn icon width="auto" height="auto"  @click="addMoney(5)" :disabled="currentmoney+5>goal">
+        <v-btn icon width="auto" height="auto" @click="addMoney(5)" :disabled="currentmoney+5>goal">
           <v-avatar size="100"><v-img src="img/five.png" style="width: 3cm;"></v-img></v-avatar>
         </v-btn>
   
       </div>
     <div v-if="!player" style="text-align: center;">
-        <v-btn icon width="auto" height="auto" @click="AIAddMoney()" >
+        <v-btn icon width="auto" height="auto" @click="AIAddMoney()">
           <v-img src="img/ai.png" style="width: 6cm;"></v-img>
         </v-btn>
     </div> 
