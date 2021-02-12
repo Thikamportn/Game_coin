@@ -31,14 +31,20 @@
       <v-main>
         <v-container>
         <div class="txt">
-            จำนวนเงินเป้าหมาย {{goal}}   <br>
-            จำนวนเงินในกล่อง  {{currentmoney}}<br>          
-            จำนวนเงินที่ AI เติม  {{aimoney}}<br>
-        </div>          <br><br>
+          <v-form class="px-3">
+            <input type="number" v-model="goal" style="text-align: center;"></v-text-field>
+            <v-btn flat class="success mx-0 mt-3" @click="submit">Enter</v-btn>
+            <v-btn flat color="error mx-0 mt-3" @click="newGame">New game</v-btn>
+          </v-form><br>
+        <label>จำนวนเงินเป้าหมาย {{goal}} </label> <br>
+        <label>จำนวนเงินในกล่อง  {{currentmoney}}</label> <br>          
+        <label>จำนวนเงินที่ AI เติม  {{aimoney}}</label> <br>
+        </div> <br>
 
-     <div v-if="goal==currentmoney" class="wner">
+      <div v-if="goal==currentmoney" class="wner">
         เกมจบ ผู้ชนะคือ {{ (!player)? "มนุษย์" : "AI" }}
-     </div>
+      </div><br>
+
      <div v-if="player" style="text-align: center;">
 
         <v-btn icon width="auto" height="auto"  @click="addMoney(1)" :disabled="currentmoney+1>goal">
@@ -59,9 +65,12 @@
           <v-img src="img/ai.png" style="width: 6cm;"></v-img>
         </v-btn>
     </div> 
+    
+    <!-- image of new play again
     <div class="again-center">
       <a href="index.html"><img src="img/play_again.png" style="width: 6cm; height: 2cm;"></a>
     </div
+    -->
     </div> 
         </v-container>
       </v-main>
@@ -125,7 +134,7 @@
       el: '#app',
       vuetify: new Vuetify(),
       data :{
-        goal : 31,
+        goal : 10,
         currentmoney:0,
         aimoney :0,
         player  :true,
@@ -143,6 +152,12 @@
            this.aimoney = solution.money;
            this.currentmoney += this.aimoney;    
            this.player = true;
+        },
+        submit(){
+          console.log(this.goal);
+        },
+        newGame(){
+          window.location.href = "index.html"
         }
       }
     })
