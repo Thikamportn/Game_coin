@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <style>
+    .txt{
+      margin-top: 3cm;
+      text-align: center;
+      font-size: 20pt;
+    }
+    .wner{
+      color: teal;
+      text-align: center;
+      font-size: 20pt;
+    }
+    .again-center{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 2cm;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <v-app>
+      <v-main>
+        <v-container>
+        <div class="txt">
+            จำนวนเงินเป้าหมาย {{goal}}   <br>
+            จำนวนเงินในกล่อง  {{currentmoney}}<br>          
+            จำนวนเงินที่ AI เติม  {{aimoney}}<br>
+        </div>          <br><br>
+
+     <div v-if="goal==currentmoney" class="wner">
+        เกมจบ ผู้ชนะคือ {{ (!player)? "มนุษย์" : "AI" }}
+     </div>
+     <div v-if="player" style="text-align: center;">
+
+        <v-btn icon width="auto" height="auto"  @click="addMoney(1)" :disabled="currentmoney+1>goal">
+          <v-avatar size="100"><v-img src="img/one.png" style="width: 3cm;"></v-img></v-avatar>
+        </v-btn>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <v-btn icon width="auto" height="auto"  @click="addMoney(2)" :disabled="currentmoney+2>goal">
+          <v-avatar size="100"><v-img src="img/two.png" style="width: 3cm;"></v-img></v-avatar>
+        </v-btn>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <v-btn icon width="auto" height="auto"  @click="addMoney(5)" :disabled="currentmoney+5>goal">
+          <v-avatar size="100"><v-img src="img/five.png" style="width: 3cm;"></v-img></v-avatar>
+        </v-btn>
+  
+      </div>
+    <div v-if="!player" style="text-align: center;">
+        <v-btn icon width="auto" height="auto" @click="AIAddMoney()" >
+          <v-img src="img/ai.png" style="width: 6cm;"></v-img>
+        </v-btn>
+    </div> 
+    <div class="again-center">
+      <a href="index.html"><img src="img/play_again.png" style="width: 6cm; height: 2cm;"></a>
+    </div
+    </div> 
+        </v-container>
+      </v-main>
+    </v-app>
+  
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+  <script>
+    
+    var scoreTree = new Map();
+    function minimax(money,goal,depth,maxmode){  
+        var key=money+"-"+maxmode;
+        if(scoreTree.has(key)){
+            return scoreTree.get(key);
+        }
+        if(money==goal){
+           if(maxmode) return {"score":-1000+depth};
+           else return {"score":1000-depth}; 
+        }
+      var r={};  
+      if(maxmode){   
+        //MAX  
+        var score = -10000;
+        var w=0;
+        for(const x of [1,2,5]){
+           if(money+x<=goal){ 
+              var s = minimax(money+x, goal, depth+1, !maxmode); 
+//              if(depth==0)
+//                console.log(x, s, maxmode);
+              if(s.score>score){
+                 w=x; 
+                 score = s.score; 
+              }
+           }
+        } 
+        r={"score":score,"money":w};       
+      }else{
+        // MIN   
+        var score = 10000;
+        var w=0;
+        for(const x of [1,2,5]){
+           if(money+x<=goal){ 
+              s = minimax(money+x, goal, depth+1, !maxmode); 
+              if(s.score<score){
+                 score = s.score; 
+                 w=x;
+              }
+           }
+        } 
+        r = {"score":score,"money":w};  
+      }
+      scoreTree.set(key,r);
+      return r;  
+    }
+
+    //var result = minimax(0,10,0,true);
+
+    new Vue({       
+      el: '#app',
+      vuetify: new Vuetify(),
+      data :{
+        goal : 31,
+        currentmoney:0,
+        aimoney :0,
+        player  :true,
+      },
+      methods :{
+        addMoney(x){
+          if(x+this.currentmoney <= this.goal){
+             this.currentmoney += x;  
+             this.player = false;
+          }
+        },
+        AIAddMoney(){
+           scoreTree.clear();
+           var solution = minimax(this.currentmoney,this.goal,0,true);
+           this.aimoney = solution.money;
+           this.currentmoney += this.aimoney;    
+           this.player = true;
+        }
+      }
+    })
+  </script>
+</body>
+</html>
