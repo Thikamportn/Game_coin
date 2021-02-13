@@ -17,10 +17,16 @@
       font-size: 25pt;
     }
     .again-center{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 2cm;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 2cm;
+    }
+    .alert{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 2cm;
     }
   </style>
 </head>
@@ -33,14 +39,14 @@
       
         <div class="txt">
           <v-form class="px-3">
-            <input type="number" v-model="goal" style="text-align: center; width: 4cm;"></v-text-field>
+            <b style="color: teal; font-size: 25pt;">เป้าหมาย: </b>
+            <input type="number" v-model="goal" style="text-align: center; width: 2cm;">  บาท</v-text-field>
+            &nbsp;&nbsp;&nbsp;
             <v-btn flat color="success mx-0 mt-3" @click="submit">ตกลง</v-btn>
-            <v-btn flat color="error mx-0 mt-3" @click="newGame">
-              <v-icon left> mdi-reload</v-icon>เริ่มใหม่</v-btn>
           </v-form><br>
-        <label>จำนวนเงินเป้าหมาย {{goal}} </label> <br>
-        <label>จำนวนเงินในกล่อง  {{currentmoney}}</label> <br>          
-        <label>จำนวนเงินที่ AI เติม  {{aimoney}}</label> <br>
+        <label>จำนวนเงินเป้าหมาย :  {{goal}} </label> <br>
+        <label>จำนวนเงินในกล่อง :  {{currentmoney}}</label> <br>          
+        <label>จำนวนเงินที่ AI เติม :  {{aimoney}}</label> <br>
         </div> <br>
 
         <div v-if="goal==currentmoney" class="wner">
@@ -62,18 +68,22 @@
           <v-avatar size="100"><v-img src="img/five.png" style="width: 3cm;"></v-img></v-avatar>
         </v-btn>
   
-      </div>
+      </div><br>
+
     <div v-if="!player" style="text-align: center;">
         <v-btn icon width="auto" height="auto" @click="AIAddMoney()">
           <v-img src="img/ai.png" style="width: 6cm;"></v-img>
         </v-btn>
     </div> 
-    
-    <!-- image of new play again
-    <div class="again-center">
-      <a href="index.html"><img src="img/play_again.png" style="width: 6cm; height: 2cm;"></a>
-    </div
-    -->
+
+    <div class="alert">
+      <v-btn flat color="normal mx-0 mt-3" 
+      onClick='alert("1.ผู้เล่น 2 คนสลับกันเติมเงินเหรียญ\n2.แต่ละครั้งที่เติมเงิน สามารถเลือกได้ว่าจะเติม 1 บาท 2 บาทหรือ 5บาท\n3.คนที่เติมเงินแล้วทำให้เงินครบตามเป้าหมายก่อนจะชนะ")'>
+        <v-icon left> mdi-lightbulb-outline</v-icon>กติกาการเล่น</v-btn>&nbsp;&nbsp;&nbsp;&nbsp;
+      <v-btn flat color="error mx-0 mt-3" @click="newGame">
+        <v-icon left> mdi-reload</v-icon>เริ่มใหม่</v-btn>
+    </div>
+  
     </div> 
         </v-container>
       </v-main>
